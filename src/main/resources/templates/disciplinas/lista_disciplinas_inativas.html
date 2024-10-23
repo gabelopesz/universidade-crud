@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Disciplinas Inativas</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+  <h1>Lista de Disciplinas Inativas</h1>
+
+  <!-- Tabela com disciplinas inativas -->
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>Código</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="disciplina : ${disciplinasInativas}">
+      <td th:text="${disciplina.id}">1</td>
+      <td th:text="${disciplina.nome}">Nome da Disciplina</td>
+      <td th:text="${disciplina.codigo}">Código</td>
+      <td>
+        <a th:href="@{/disciplinas/reativar/{id}(id=${disciplina.id})}" class="button">Reativar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Botão para voltar -->
+  <div class="flex-container">
+    <a th:href="@{/disciplinas/ativas}" class="button">Voltar à Lista de Disciplinas Ativas</a>
+  </div>
+</div>
+</body>
+</html>

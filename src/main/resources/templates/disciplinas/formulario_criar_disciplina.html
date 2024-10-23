@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Criar Nova Disciplina</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h1>Criar Nova Disciplina</h1>
+
+<!-- Formulário para criação de uma nova disciplina -->
+<form th:action="@{/disciplinas/salvar}" th:object="${disciplina}" method="post">
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}" placeholder="Nome da Disciplina" required />
+    <br/>
+
+    <label>Código:</label>
+    <input type="text" th:field="*{codigo}" placeholder="Código da Disciplina" required />
+    <br/>
+
+    <button type="submit">Salvar</button>
+</form>
+<!-- Link para voltar à lista de disciplinas -->
+<a th:href="@{/disciplinas/ativas}">Voltar à Lista</a>
+</body>
+</html>
