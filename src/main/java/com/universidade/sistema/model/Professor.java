@@ -1,9 +1,7 @@
 package com.universidade.sistema.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Professor {
@@ -13,11 +11,15 @@ public class Professor {
     private Long id;
 
     private String nome;
-    private String matricula;
+
+    private String tituloAcademico;
+
     private boolean ativo = true;
 
-    // Getters e setters
+    @OneToMany(mappedBy = "professor")
+    private List<Turma> turmas;
 
+    // Getters e setters
     public Long getId() {
         return id;
     }
@@ -34,12 +36,12 @@ public class Professor {
         this.nome = nome;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public String getTituloAcademico() {
+        return tituloAcademico;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setTituloAcademico(String tituloAcademico) {
+        this.tituloAcademico = tituloAcademico;
     }
 
     public boolean isAtivo() {
@@ -48,5 +50,13 @@ public class Professor {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public List<Turma> getTurmas() {
+        return turmas;
+    }
+
+    public void setTurmas(List<Turma> turmas) {
+        this.turmas = turmas;
     }
 }

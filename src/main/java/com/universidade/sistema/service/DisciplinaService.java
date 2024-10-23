@@ -25,14 +25,12 @@ public class DisciplinaService {
         return repository.save(disciplina);
     }
 
-    // Desativar uma disciplina (marcar como inativa)
     public void desativar(Long id) {
         Disciplina disciplina = repository.findById(id).orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
-        disciplina.setAtivo(false);  // Marca como inativa
+        disciplina.setAtivo(false);
         repository.save(disciplina);
     }
 
-    // Reativar uma disciplina (marcar como ativa novamente)
     public void reativar(Long id) {
         Disciplina disciplina = repository.findById(id).orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
         disciplina.setAtivo(true);

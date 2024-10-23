@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="${professor.id == null} ? 'Criar Novo Professor' : 'Editar Professor'"></title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h1 th:text="${professor.id == null} ? 'Criar Novo Professor' : 'Editar Professor'"></h1>
+
+<form th:action="@{/professores/salvar}" th:object="${professor}" method="post">
+  <input type="hidden" th:field="*{id}" />
+
+  <label>Nome:</label>
+  <input type="text" th:field="*{nome}" placeholder="Nome do Professor" required />
+  <br/>
+
+  <label>Título Acadêmico:</label>
+  <input type="text" th:field="*{tituloAcademico}" placeholder="Título Acadêmico" required />
+  <br/>
+
+  <button type="submit">Salvar</button>
+</form>
+
+<a th:href="@{/professores/ativos}">Voltar à Lista</a>
+</body>
+</html>

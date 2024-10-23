@@ -1,12 +1,6 @@
 package com.universidade.sistema.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
 public class Sala {
@@ -16,7 +10,9 @@ public class Sala {
     private Long id;
 
     private String nome;
+
     private int capacidade;
+
     private boolean ativo = true;
 
     // Getters e setters

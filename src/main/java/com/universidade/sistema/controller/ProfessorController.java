@@ -6,44 +6,55 @@ import com.universidade.sistema.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
-
-@RestController
+@Controller
 @RequestMapping("/professores")
 public class ProfessorController {
+
     @Autowired
-    private ProfessorService service;
+    private ProfessorService professorService;
 
     @GetMapping("/ativos")
-    public List<Professor> listarAtivos() {
-        return service.listarAtivos();
+    public String listarAtivos(Model model) {
+        model.addAttribute("professoresAtivos", professorService.listarAtivos());
+        return "professores/lista_professores_ativos";
     }
 
     @GetMapping("/inativos")
-    public List<Professor> listarInativos() {
-        return service.listarInativos();
+    public String listarInativos(Model model) {
+        model.addAttribute("professoresInativos", professorService.listarInativos());
+        return "professores/lista_professores_inativos";
     }
 
-    @PostMapping
-    public Professor criar(@RequestBody Professor professor) {
-        return service.salvar(professor);
+    @GetMapping("/reativar/{id}")
+    public String reativarProfessor(@PathVariable("id") Long id) {
+        professorService.reativar(id);
+        return "redirect:/professores/inativos";
     }
 
-    @PutMapping("/{id}")
-    public Professor atualizar(@PathVariable Long id, @RequestBody Professor professorAtualizado) {
-        professorAtualizado.setId(id);
-        return service.salvar(professorAtualizado);
+    @GetMapping("/novo")
+    public String criarProfessorForm(Model model) {
+        model.addAttribute("professor", new Professor());
+        return "professores/formulario_criar_professor";
     }
 
-    @DeleteMapping("/{id}")
-    public void desativar(@PathVariable Long id) {
-        service.desativar(id);
+    @PostMapping("/salvar")
+    public String salvarProfessor(@ModelAttribute Professor professor) {
+        professorService.salvar(professor);
+        return "redirect:/professores/ativos";  // Corrigido para a rota correta
     }
 
-    @PutMapping("/reativar/{id}")
-    public void reativar(@PathVariable Long id) {
-        service.reativar(id);
+    @GetMapping("/editar/{id}")
+    public String editarProfessorForm(@PathVariable("id") Long id, Model model) {
+        Professor professor = professorService.buscarPorId(id);
+        model.addAttribute("professor", professor);
+        return "professores/formulario_editar_professor";
     }
+
+    @GetMapping("/desativar/{id}")
+    public String desativarProfessor(@PathVariable("id") Long id) {
+        professorService.desativar(id);
+        return "redirect:/professores/ativos";  // Corrigido para a rota correta
+    }
+
 }
-

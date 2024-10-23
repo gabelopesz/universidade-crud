@@ -8,14 +8,12 @@
 <div class="container">
   <h1>Lista de Disciplinas Ativas</h1>
 
-  <!-- Container flexível para os botões -->
   <div class="flex-container">
     <a th:href="@{/disciplinas/nova}" class="button">Criar Nova Disciplina</a>
     <a th:href="@{/disciplinas/inativas}" class="button button-secondary">Visualizar Disciplinas Inativas</a>
     <a th:href="@{ / }" class="button">Voltar ao Menu</a> <!-- Novo botão para voltar ao menu -->
   </div>
 
-  <!-- Tabela com disciplinas ativas -->
   <table>
     <thead>
     <tr>

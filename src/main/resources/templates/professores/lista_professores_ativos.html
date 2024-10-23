@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Professores Ativos</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Lista de Professores Ativos</h1>
+
+    <div class="flex-container">
+        <a th:href="@{/professores/novo}" class="button">Criar Novo Professor</a>
+        <a th:href="@{/professores/inativos}" class="button button-secondary">Visualizar Professores Inativos</a>
+        <a th:href="@{ / }" class="button">Voltar ao Menu</a>
+    </div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Título Acadêmico</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="professor : ${professoresAtivos}">
+            <td th:text="${professor.id}">1</td>
+            <td th:text="${professor.nome}">Nome do Professor</td>
+            <td th:text="${professor.tituloAcademico}">Título Acadêmico</td>
+            <td>
+                <a th:href="@{/professores/editar/{id}(id=${professor.id})}" class="button">Editar</a>
+                <a th:href="@{/professores/desativar/{id}(id=${professor.id})}" class="button button-danger"
+                   onclick="return confirm('Tem certeza que deseja desativar este professor?');">Desativar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Turma</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h1 th:text="${turma.id == null} ? 'Criar Nova Turma' : 'Editar Turma'"></h1>
+
+<form th:action="@{/turmas/salvar}" th:object="${turma}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <label>Disciplina:</label>
+    <select th:field="*{disciplina.id}">
+        <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}" th:selected="${disciplina.id == turma.disciplina.id}"></option>
+    </select>
+    <br/>
+
+    <label>Professor:</label>
+    <select th:field="*{professor.id}">
+        <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}" th:selected="${professor.id == turma.professor.id}"></option>
+    </select>
+    <br/>
+
+    <label>Sala:</label>
+    <select th:field="*{sala.id}">
+        <option th:each="sala : ${salas}" th:value="${sala.id}" th:text="${sala.nome}" th:selected="${sala.id == turma.sala.id}"></option>
+    </select>
+    <br/>
+
+    <label>Período:</label>
+    <input type="text" th:field="*{periodo}" placeholder="Período" required />
+    <br/>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<a th:href="@{/turmas/ativas}">Voltar à Lista</a>
+</body>
+</html>

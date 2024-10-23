@@ -12,7 +12,6 @@ public class Disciplina {
 
     private String nome;
 
-    // Novo campo código da disciplina
     private String codigo;
 
     private boolean ativo = true;

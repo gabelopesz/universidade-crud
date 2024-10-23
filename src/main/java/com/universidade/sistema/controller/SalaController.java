@@ -1,48 +1,59 @@
 package com.universidade.sistema.controller;
 
+import org.springframework.ui.Model;
 import com.universidade.sistema.model.Sala;
 import com.universidade.sistema.service.SalaService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
+@Controller
 @RequestMapping("/salas")
 public class SalaController {
 
     @Autowired
-    private SalaService service;
+    private SalaService salaService;
 
     @GetMapping("/ativas")
-    public List<Sala> listarAtivas() {
-        return service.listarAtivas();
+    public String listarAtivas(Model model) {
+        model.addAttribute("salasAtivas", salaService.listarAtivas());
+        return "salas/lista_salas_ativas";
     }
 
     @GetMapping("/inativas")
-    public List<Sala> listarInativas() {
-        return service.listarInativas();
+    public String listarInativas(Model model) {
+        model.addAttribute("salasInativas", salaService.listarInativas());
+        return "salas/lista_salas_inativas";
     }
 
-    @PostMapping
-    public Sala criar(@RequestBody Sala sala) {
-        return service.salvar(sala);
+    @GetMapping("/reativar/{id}")
+    public String reativarSala(@PathVariable("id") Long id) {
+        salaService.reativar(id);
+        return "redirect:/salas/inativas";
     }
 
-    @PutMapping("/{id}")
-    public Sala atualizar(@PathVariable Long id, @RequestBody Sala salaAtualizada) {
-        salaAtualizada.setId(id);
-        return service.salvar(salaAtualizada);
+    @GetMapping("/nova")
+    public String criarSalaForm(Model model) {
+        model.addAttribute("sala", new Sala());
+        return "salas/formulario_criar_sala";
     }
 
-    @DeleteMapping("/{id}")
-    public void desativar(@PathVariable Long id) {
-        service.desativar(id);
+    @PostMapping("/salvar")
+    public String salvarSala(@ModelAttribute Sala sala) {
+        salaService.salvar(sala);
+        return "redirect:/salas/ativas";
     }
 
-    @PutMapping("/reativar/{id}")
-    public void reativar(@PathVariable Long id) {
-        service.reativar(id);
+    @GetMapping("/editar/{id}")
+    public String editarSalaForm(@PathVariable("id") Long id, Model model) {
+        Sala sala = salaService.buscarPorId(id);
+        model.addAttribute("sala", sala);
+        return "salas/formulario_editar_sala";
+    }
+
+    @GetMapping("/desativar/{id}")
+    public String desativarSala(@PathVariable("id") Long id) {
+        salaService.desativar(id);
+        return "redirect:/salas/ativas";
     }
 }

@@ -4,10 +4,12 @@ import com.universidade.sistema.model.Professor;
 import com.universidade.sistema.repository.ProfessorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class ProfessorService {
+
     @Autowired
     private ProfessorRepository repository;
 
@@ -20,7 +22,7 @@ public class ProfessorService {
     }
 
     public Professor salvar(Professor professor) {
-        return (Professor) repository.save(professor);
+        return repository.save(professor);
     }
 
     public void desativar(Long id) {
@@ -34,5 +36,8 @@ public class ProfessorService {
         professor.setAtivo(true);
         repository.save(professor);
     }
-}
 
+    public Professor buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Professor não encontrado"));
+    }
+}

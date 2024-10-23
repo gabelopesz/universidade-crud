@@ -4,6 +4,7 @@ import com.universidade.sistema.model.Turma;
 import com.universidade.sistema.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -35,5 +36,8 @@ public class TurmaService {
         turma.setAtivo(true);
         repository.save(turma);
     }
-}
 
+    public Turma buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Turma não encontrada"));
+    }
+}

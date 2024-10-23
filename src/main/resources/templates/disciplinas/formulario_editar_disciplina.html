@@ -9,7 +9,6 @@
 
 <form th:action="@{/disciplinas/salvar}" th:object="${disciplina}" method="post">
 
-  <!-- Campo oculto para o ID da disciplina (essencial para edição) -->
   <input type="hidden" th:field="*{id}" />
 
   <label>Nome:</label>
@@ -23,5 +22,4 @@
   <button type="submit">Salvar</button>
 </form>
 
-<!-- Link para voltar à lista de disciplinas -->
 <a th:href="@{/disciplinas/ativas}">Voltar à Lista</a>

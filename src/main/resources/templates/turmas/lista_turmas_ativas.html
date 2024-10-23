@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Turmas Ativas</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h1>Lista de Turmas Ativas</h1>
+
+<div class="flex-container">
+    <a th:href="@{/turmas/nova}" class="button">Criar Nova Turma</a>
+    <a th:href="@{/turmas/inativas}" class="button button-secondary">Visualizar Turmas Inativas</a>
+    <a th:href="@{ / }" class="button">Voltar ao Menu</a>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Disciplina</th>
+        <th>Professor</th>
+        <th>Sala</th>
+        <th>Período</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="turma : ${turmasAtivas}">
+        <td th:text="${turma.id}">1</td>
+        <td th:text="${turma.disciplina.nome}">Disciplina</td>
+        <td th:text="${turma.professor.nome}">Professor</td>
+        <td th:text="${turma.sala.nome}">Sala</td>
+        <td th:text="${turma.periodo}">Período</td>
+        <td>
+            <a th:href="@{/turmas/editar/{id}(id=${turma.id})}" class="button">Editar</a>
+            <a th:href="@{/turmas/desativar/{id}(id=${turma.id})}" class="button button-danger"
+               onclick="return confirm('Tem certeza que deseja desativar esta turma?');">Desativar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

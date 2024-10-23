@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Professores Inativos</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+    <h1>Lista de Professores Inativos</h1>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Título Acadêmico</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="professor : ${professoresInativos}">
+            <td th:text="${professor.id}">1</td>
+            <td th:text="${professor.nome}">Nome do Professor</td>
+            <td th:text="${professor.tituloAcademico}">Título Acadêmico</td>
+            <td>
+                <a th:href="@{/professores/reativar/{id}(id=${professor.id})}" class="button">Reativar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="flex-container">
+        <a th:href="@{/professores/ativos}" class="button">Voltar à Lista de Professores Ativos</a>
+    </div>
+</div>
+</body>
+</html>

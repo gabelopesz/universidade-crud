@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Criar Nova Sala</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<h1>Criar Nova Sala</h1>
+
+<form th:action="@{/salas/salvar}" th:object="${sala}" method="post">
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}" placeholder="Nome da Sala" required />
+    <br/>
+
+    <label>Capacidade:</label>
+    <input type="number" th:field="*{capacidade}" placeholder="Capacidade" required />
+    <br/>
+
+    <button type="submit">Salvar</button>
+</form>
+
+<a th:href="@{/salas/ativas}">Voltar à Lista</a>
+</body>
+</html>

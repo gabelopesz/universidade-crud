@@ -4,6 +4,7 @@ import com.universidade.sistema.model.Sala;
 import com.universidade.sistema.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -34,5 +35,9 @@ public class SalaService {
         Sala sala = repository.findById(id).orElseThrow(() -> new RuntimeException("Sala não encontrada"));
         sala.setAtivo(true);
         repository.save(sala);
+    }
+
+    public Sala buscarPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Sala não encontrada"));
     }
 }
