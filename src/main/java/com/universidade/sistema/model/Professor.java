@@ -12,6 +12,9 @@ public class Professor {
 
     private String nome;
 
+    @Column(unique = true, nullable = false)
+    private String cpf;
+
     private String tituloAcademico;
 
     private boolean ativo = true;
@@ -35,6 +38,10 @@ public class Professor {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    public String getCpf() {return cpf;}
+
+    public void setCpf(String cpf) {this.cpf = cpf;}
 
     public String getTituloAcademico() {
         return tituloAcademico;

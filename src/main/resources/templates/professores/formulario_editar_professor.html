@@ -10,12 +10,25 @@
 <form th:action="@{/professores/salvar}" th:object="${professor}" method="post">
   <input type="hidden" th:field="*{id}" />
 
-  <label>Nome:</label>
-  <input type="text" th:field="*{nome}" placeholder="Nome do Professor" required />
+  <label for="nome">Nome:</label>
+  <input type="text" th:field="*{nome}" id="nome" placeholder="Nome do Professor" required />
+  <div th:if="${#fields.hasErrors('nome')}" class="error">
+    <p th:errors="*{nome}">Erro no Nome</p>
+  </div>
   <br/>
 
-  <label>Título Acadêmico:</label>
-  <input type="text" th:field="*{tituloAcademico}" placeholder="Título Acadêmico" required />
+  <label for="cpf">CPF:</label>
+  <input type="text" th:field="*{cpf}" id="cpf" placeholder="000.000.000-00" required />
+  <div th:if="${#fields.hasErrors('cpf')}" class="error">
+    <p th:errors="*{cpf}">Erro no CPF</p>
+  </div>
+  <br/>
+
+  <label for="tituloAcademico">Título Acadêmico:</label>
+  <input type="text" th:field="*{tituloAcademico}" id="tituloAcademico" placeholder="Título Acadêmico" required />
+  <div th:if="${#fields.hasErrors('tituloAcademico')}" class="error">
+    <p th:errors="*{tituloAcademico}">Erro no Título Acadêmico</p>
+  </div>
   <br/>
 
   <button type="submit">Salvar</button>

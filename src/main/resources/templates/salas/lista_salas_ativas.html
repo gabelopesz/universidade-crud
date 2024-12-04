@@ -8,17 +8,25 @@
 <div class="container">
     <h1>Lista de Salas Ativas</h1>
 
-    <div class="flex-container">
+    <!-- Formulário de pesquisa -->
+    <form th:action="@{/salas/ativas}" method="get" style="margin-bottom: 20px;">
+        <input type="text" name="termo" placeholder="Pesquisar..." th:value="${termo}" style="padding: 8px; width: 200px;" />
+        <button type="submit" class="button">Buscar</button>
+    </form>
+
+    <div class="flex-container" style="margin-bottom: 20px;">
         <a th:href="@{/salas/nova}" class="button">Criar Nova Sala</a>
         <a th:href="@{/salas/inativas}" class="button button-secondary">Visualizar Salas Inativas</a>
         <a th:href="@{ / }" class="button">Voltar ao Menu</a>
     </div>
 
+    <!-- Tabela com lista de salas ativas -->
     <table>
         <thead>
         <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Local</th>
             <th>Capacidade</th>
             <th>Ações</th>
         </tr>
@@ -27,6 +35,7 @@
         <tr th:each="sala : ${salasAtivas}">
             <td th:text="${sala.id}">1</td>
             <td th:text="${sala.nome}">Nome da Sala</td>
+            <td th:text="${sala.local}">Local</td>
             <td th:text="${sala.capacidade}">Capacidade</td>
             <td>
                 <a th:href="@{/salas/editar/{id}(id=${sala.id})}" class="button">Editar</a>

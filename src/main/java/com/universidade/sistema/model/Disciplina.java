@@ -14,6 +14,8 @@ public class Disciplina {
 
     private String codigo;
 
+    private String periodo;
+
     private boolean ativo = true;
 
     // Getters e setters
@@ -41,6 +43,10 @@ public class Disciplina {
     public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
+
+    public String getPeriodo() {return periodo;}
+
+    public void setPeriodo(String periodo) {this.periodo = periodo;}
 
     public boolean isAtivo() {
         return ativo;

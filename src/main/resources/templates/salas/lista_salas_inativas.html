@@ -13,6 +13,7 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>Local</th>
             <th>Capacidade</th>
             <th>Ações</th>
         </tr>
@@ -21,6 +22,7 @@
         <tr th:each="sala : ${salasInativas}">
             <td th:text="${sala.id}">1</td>
             <td th:text="${sala.nome}">Nome da Sala</td>
+            <td th:text="${sala.local}">Local</td>
             <td th:text="${sala.capacidade}">Capacidade</td>
             <td>
                 <a th:href="@{/salas/reativar/{id}(id=${sala.id})}" class="button">Reativar</a>

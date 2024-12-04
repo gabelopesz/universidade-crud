@@ -5,7 +5,9 @@ import com.universidade.sistema.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.Normalizer;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SalaService {
@@ -40,4 +42,17 @@ public class SalaService {
     public Sala buscarPorId(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Sala não encontrada"));
     }
+
+    private String removerAcentos(String texto) {
+        return Normalizer.normalize(texto, Normalizer.Form.NFD)
+                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+    }
+
+    public List<Sala> pesquisar(String termo) {
+        String termoNormalizado = removerAcentos(termo.toLowerCase());
+        return repository.findAll().stream()
+                .filter(p -> removerAcentos(p.getNome().toLowerCase()).contains(termoNormalizado))
+                .collect(Collectors.toList());
+    }
 }
+

@@ -8,17 +8,26 @@
 <div class="container">
     <h1>Lista de Professores Ativos</h1>
 
-    <div class="flex-container">
+    <!-- Formulário de pesquisa -->
+    <form th:action="@{/professores/ativos}" method="get" style="margin-bottom: 20px;">
+        <input type="text" name="termo" placeholder="Pesquisar..." th:value="${termo}" style="padding: 8px; width: 200px;" />
+        <button type="submit" class="button">Buscar</button>
+    </form>
+
+    <!-- Botões para criar, visualizar inativos e voltar ao menu -->
+    <div class="flex-container" style="margin-bottom: 20px;">
         <a th:href="@{/professores/novo}" class="button">Criar Novo Professor</a>
         <a th:href="@{/professores/inativos}" class="button button-secondary">Visualizar Professores Inativos</a>
         <a th:href="@{ / }" class="button">Voltar ao Menu</a>
     </div>
 
+    <!-- Tabela com lista de professores ativos -->
     <table>
         <thead>
         <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>CPF</th>
             <th>Título Acadêmico</th>
             <th>Ações</th>
         </tr>
@@ -27,6 +36,7 @@
         <tr th:each="professor : ${professoresAtivos}">
             <td th:text="${professor.id}">1</td>
             <td th:text="${professor.nome}">Nome do Professor</td>
+            <td th:text="${professor.cpf}">000.000.000-00</td>
             <td th:text="${professor.tituloAcademico}">Título Acadêmico</td>
             <td>
                 <a th:href="@{/professores/editar/{id}(id=${professor.id})}" class="button">Editar</a>

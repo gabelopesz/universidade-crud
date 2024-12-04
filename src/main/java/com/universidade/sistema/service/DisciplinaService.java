@@ -22,6 +22,7 @@ public class DisciplinaService {
     }
 
     public Disciplina salvar(Disciplina disciplina) {
+        validarCodigo(disciplina.getCodigo());
         return repository.save(disciplina);
     }
 
@@ -40,5 +41,14 @@ public class DisciplinaService {
     public Disciplina buscarPorId(Long id) {
         return repository.findById(id).orElseThrow(() -> new RuntimeException("Disciplina não encontrada"));
     }
-}
 
+    public List<Disciplina> pesquisar(String termo) {
+        return repository.pesquisarPorNome(termo);
+    }
+
+    private void validarCodigo(String codigo) {
+        if (codigo == null || codigo.length() != 6) {
+            throw new IllegalArgumentException("O código da disciplina deve ter exatamente 6 caracteres.");
+        }
+    }
+}

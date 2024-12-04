@@ -3,6 +3,22 @@
 <head>
     <title>Lista de Turmas Inativas</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+    <style>
+        .button {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 <h1>Lista de Turmas Inativas</h1>
@@ -11,20 +27,24 @@
     <thead>
     <tr>
         <th>ID</th>
+        <th>Nome</th>
         <th>Disciplina</th>
         <th>Professor</th>
         <th>Sala</th>
-        <th>Período</th>
+        <th>Dia da Semana</th>
+        <th>Horário</th>
         <th>Ações</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="turma : ${turmasInativas}">
         <td th:text="${turma.id}">1</td>
-        <td th:text="${turma.disciplina.nome}">Disciplina</td>
-        <td th:text="${turma.professor.nome}">Professor</td>
-        <td th:text="${turma.sala.nome}">Sala</td>
-        <td th:text="${turma.periodo}">Período</td>
+        <td th:text="${turma.nome != null ? turma.nome : 'Não definido'}">Nome</td>
+        <td th:text="${turma.disciplina != null ? turma.disciplina.nome : 'Não definida'}">Disciplina</td>
+        <td th:text="${turma.professor != null ? turma.professor.nome : 'Não definido'}">Professor</td>
+        <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
+        <td th:text="${turma.dia_da_semana != null ? turma.dia_da_semana : 'Não definido'}">Dia</td>
+        <td th:text="${turma.horário_inicio != null && turma.horário_termino != null ? turma.horário_inicio + ' - ' + turma.horário_termino : 'Horário não definido'}">Horário</td>
         <td>
             <a th:href="@{/turmas/reativar/{id}(id=${turma.id})}" class="button">Reativar</a>
         </td>

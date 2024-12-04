@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/professores")
 public class ProfessorController {
@@ -15,8 +17,17 @@ public class ProfessorController {
     private ProfessorService professorService;
 
     @GetMapping("/ativos")
-    public String listarAtivos(Model model) {
-        model.addAttribute("professoresAtivos", professorService.listarAtivos());
+    public String listarAtivos(@RequestParam(value = "termo", required = false) String termo, Model model) {
+        List<Professor> professores;
+
+        if (termo != null && !termo.isEmpty()) {
+            professores = professorService.pesquisar(termo);
+        } else {
+            professores = professorService.listarAtivos();  // Método para listar professores ativos
+        }
+
+        model.addAttribute("professoresAtivos", professores);
+        model.addAttribute("termo", termo);
         return "professores/lista_professores_ativos";
     }
 
@@ -39,9 +50,15 @@ public class ProfessorController {
     }
 
     @PostMapping("/salvar")
-    public String salvarProfessor(@ModelAttribute Professor professor) {
-        professorService.salvar(professor);
-        return "redirect:/professores/ativos";  // Corrigido para a rota correta
+    public String salvarProfessor(@ModelAttribute Professor professor, Model model) {
+        try {
+            professorService.salvar(professor);
+            return "redirect:/professores/ativos";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("erro", e.getMessage()); // Adiciona mensagem de erro ao modelo
+            model.addAttribute("professor", professor); // Mantém os dados já preenchidos
+            return "professores/formulario_criar_professor";
+        }
     }
 
     @GetMapping("/editar/{id}")
@@ -56,5 +73,4 @@ public class ProfessorController {
         professorService.desativar(id);
         return "redirect:/professores/ativos";  // Corrigido para a rota correta
     }
-
 }

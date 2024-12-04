@@ -11,33 +11,39 @@ import java.util.List;
 public class TurmaService {
 
     @Autowired
-    private TurmaRepository repository;
+    private TurmaRepository turmaRepository;
 
     public List<Turma> listarAtivas() {
-        return repository.findByAtivoTrue();
+        return turmaRepository.findByAtivoTrue();
     }
 
     public List<Turma> listarInativas() {
-        return repository.findByAtivoFalse();
+        return turmaRepository.findByAtivoFalse();
     }
 
     public Turma salvar(Turma turma) {
-        return repository.save(turma);
+        return turmaRepository.save(turma);
     }
 
     public void desativar(Long id) {
-        Turma turma = repository.findById(id).orElseThrow(() -> new RuntimeException("Turma não encontrada"));
+        Turma turma = turmaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
         turma.setAtivo(false);
-        repository.save(turma);
+        turmaRepository.save(turma);
     }
 
     public void reativar(Long id) {
-        Turma turma = repository.findById(id).orElseThrow(() -> new RuntimeException("Turma não encontrada"));
+        Turma turma = turmaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
         turma.setAtivo(true);
-        repository.save(turma);
+        turmaRepository.save(turma);
     }
 
     public Turma buscarPorId(Long id) {
-        return repository.findById(id).orElseThrow(() -> new RuntimeException("Turma não encontrada"));
+        return turmaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
+    }
+    public List<Turma> pesquisarTurmas(Long disciplinaId, Long professorId, Long salaId) {
+        return turmaRepository.findByDisciplinaIdAndProfessorIdAndSalaId(disciplinaId, professorId, salaId);
     }
 }

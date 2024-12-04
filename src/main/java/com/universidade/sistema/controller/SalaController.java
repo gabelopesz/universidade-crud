@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/salas")
 public class SalaController {
@@ -15,9 +17,18 @@ public class SalaController {
     private SalaService salaService;
 
     @GetMapping("/ativas")
-    public String listarAtivas(Model model) {
-        model.addAttribute("salasAtivas", salaService.listarAtivas());
-        return "salas/lista_salas_ativas";
+    public String listarAtivas(@RequestParam(value = "termo", required = false) String termo, Model model) {
+        List<Sala> salas;
+
+        if (termo != null && !termo.isEmpty()) {
+            salas = salaService.pesquisar(termo);
+        } else {
+            salas = salaService.listarAtivas();
+        }
+
+        model.addAttribute("salasAtivas", salas);  // Alterado para "salasAtivas"
+        model.addAttribute("termo", termo);
+        return "salas/lista_salas_ativas";  // Certifique-se de que o nome do template é "lista_salas_ativas.html"
     }
 
     @GetMapping("/inativas")

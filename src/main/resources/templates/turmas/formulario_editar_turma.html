@@ -29,8 +29,20 @@
     </select>
     <br/>
 
-    <label>Período:</label>
-    <input type="text" th:field="*{periodo}" placeholder="Período" required />
+    <label>Nome:</label>
+    <input type="text" th:field="*{nome}" placeholder="Nome da Turma" required />
+    <br/>
+
+    <label>Dia da Semana:</label>
+    <input type="text" th:field="*{dia_da_semana}" placeholder="Ex: Segunda-feira" required />
+    <br/>
+
+    <label>Horário de Início:</label>
+    <input type="time" th:field="*{horário_inicio}" required />
+    <br/>
+
+    <label>Horário de Término:</label>
+    <input type="time" th:field="*{horário_termino}" required />
     <br/>
 
     <button type="submit">Salvar</button>

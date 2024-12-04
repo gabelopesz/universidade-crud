@@ -8,18 +8,26 @@
 <div class="container">
   <h1>Lista de Disciplinas Ativas</h1>
 
+  <!-- Formulário de pesquisa -->
+  <form th:action="@{/disciplinas/ativas}" method="get">
+    <input type="text" name="termo" placeholder="Pesquisar..." th:value="${termo}" />
+    <button type="submit" class="button">Buscar</button>
+  </form>
+
   <div class="flex-container">
     <a th:href="@{/disciplinas/nova}" class="button">Criar Nova Disciplina</a>
     <a th:href="@{/disciplinas/inativas}" class="button button-secondary">Visualizar Disciplinas Inativas</a>
-    <a th:href="@{ / }" class="button">Voltar ao Menu</a> <!-- Novo botão para voltar ao menu -->
+    <a th:href="@{ / }" class="button">Voltar ao Menu</a>
   </div>
 
+  <!-- Tabela com disciplinas ativas -->
   <table>
     <thead>
     <tr>
       <th>ID</th>
       <th>Nome</th>
       <th>Código</th>
+      <th>Período</th>
       <th>Ações</th>
     </tr>
     </thead>
@@ -28,6 +36,7 @@
       <td th:text="${disciplina.id}">1</td>
       <td th:text="${disciplina.nome}">Nome da Disciplina</td>
       <td th:text="${disciplina.codigo}">Código</td>
+      <td th:text="${disciplina.periodo}">Período</td>
       <td>
         <a th:href="@{/disciplinas/editar/{id}(id=${disciplina.id})}" class="button">Editar</a>
         <a th:href="@{/disciplinas/desativar/{id}(id=${disciplina.id})}" class="button button-danger"

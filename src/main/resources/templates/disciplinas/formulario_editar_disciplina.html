@@ -17,9 +17,19 @@
 
   <label>Código:</label>
   <input type="text" th:field="*{codigo}" placeholder="Código da Disciplina" required />
+  <div class="info">Código deve ter 6 caracteres</div>
+  <div th:if="${erro}" class="error">
+    <p th:text="${erro}"></p>
+  </div>
+  <br/>
+
+  <label>Período:</label>
+  <input type="text" th:field="*{periodo}" placeholder="Período da Disciplina" required />
   <br/>
 
   <button type="submit">Salvar</button>
 </form>
 
 <a th:href="@{/disciplinas/ativas}">Voltar à Lista</a>
+</body>
+</html>

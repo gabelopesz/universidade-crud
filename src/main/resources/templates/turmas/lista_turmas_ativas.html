@@ -1,43 +1,111 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lista de Turmas Ativas</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+    <title>Lista de Turmas</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <style>
+        .message {
+            color: red;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button {
+            padding: 8px 16px;
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .return-button {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<h1>Lista de Turmas Ativas</h1>
+<div class="container">
+    <h1>Lista de Turmas</h1>
 
-<div class="flex-container">
-    <a th:href="@{/turmas/nova}" class="button">Criar Nova Turma</a>
-    <a th:href="@{/turmas/inativas}" class="button button-secondary">Visualizar Turmas Inativas</a>
-    <a th:href="@{ / }" class="button">Voltar ao Menu</a>
+    <form th:action="@{/turmas/ativas}" method="get" class="form-actions">
+        <label for="disciplinaId">Disciplina:</label>
+        <select id="disciplinaId" name="disciplinaId">
+            <option value="">Todas</option>
+            <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}"></option>
+        </select>
+
+        <label for="professorId">Professor:</label>
+        <select id="professorId" name="professorId">
+            <option value="">Todos</option>
+            <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
+        </select>
+
+        <label for="salaId">Sala:</label>
+        <select id="salaId" name="salaId">
+            <option value="">Todas</option>
+            <option th:each="sala : ${salas}" th:value="${sala.id}" th:text="${sala.nome}"></option>
+        </select>
+
+        <button type="submit" class="button">Pesquisar</button>
+        <a th:href="@{/turmas/nova}" class="button">Criar Nova Turma</a>
+        <a th:href="@{/turmas/inativas}" class="button">Ver Turmas Inativas</a>
+    </form>
+
+    <div th:if="${turmas.size() == 0}" class="message">
+        Nenhum registro encontrado com esses critérios.
+    </div>
+
+    <table th:if="${turmas.size() > 0}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Disciplina</th>
+            <th>Professor</th>
+            <th>Sala</th>
+            <th>Dia da Semana</th>
+            <th>Horário</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="turma : ${turmas}">
+            <td th:text="${turma.id}">1</td>
+            <td th:text="${turma.nome}">Nome</td>
+            <td th:text="${turma.disciplina != null ? turma.disciplina.nome : 'Não definida'}">Disciplina</td>
+            <td th:text="${turma.professor != null ? turma.professor.nome : 'Não definido'}">Professor</td>
+            <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
+            <td th:text="${turma.dia_da_semana != null ? turma.dia_da_semana : 'Não definido'}">Dia</td>
+            <td th:text="${turma.horário_inicio != null && turma.horário_termino != null ? turma.horário_inicio + ' - ' + turma.horário_termino : 'Horário não definido'}">Horário</td>
+            <td>
+                <a th:href="@{/turmas/editar/{id}(id=${turma.id})}" class="button">Editar</a>
+                <a th:href="@{/turmas/desativar/{id}(id=${turma.id})}" class="button button-danger"
+                   onclick="return confirm('Deseja realmente inativar esta turma?');">Desativar</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Botão de retorno ao menu -->
+    <div class="return-button">
+        <a th:href="@{ / }" class="button">Voltar ao Menu</a>
+    </div>
 </div>
-
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Disciplina</th>
-        <th>Professor</th>
-        <th>Sala</th>
-        <th>Período</th>
-        <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="turma : ${turmasAtivas}">
-        <td th:text="${turma.id}">1</td>
-        <td th:text="${turma.disciplina.nome}">Disciplina</td>
-        <td th:text="${turma.professor.nome}">Professor</td>
-        <td th:text="${turma.sala.nome}">Sala</td>
-        <td th:text="${turma.periodo}">Período</td>
-        <td>
-            <a th:href="@{/turmas/editar/{id}(id=${turma.id})}" class="button">Editar</a>
-            <a th:href="@{/turmas/desativar/{id}(id=${turma.id})}" class="button button-danger"
-               onclick="return confirm('Tem certeza que deseja desativar esta turma?');">Desativar</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
 </body>
 </html>

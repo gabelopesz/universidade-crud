@@ -14,6 +14,7 @@
       <th>ID</th>
       <th>Nome</th>
       <th>Código</th>
+      <th>Período</th>
       <th>Ações</th>
     </tr>
     </thead>
@@ -22,6 +23,7 @@
       <td th:text="${disciplina.id}">1</td>
       <td th:text="${disciplina.nome}">Nome da Disciplina</td>
       <td th:text="${disciplina.codigo}">Código</td>
+      <td th:text="${disciplina.periodo}">Período</td>
       <td>
         <a th:href="@{/disciplinas/reativar/{id}(id=${disciplina.id})}" class="button">Reativar</a>
       </td>

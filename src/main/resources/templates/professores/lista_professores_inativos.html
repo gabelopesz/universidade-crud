@@ -13,6 +13,7 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
+            <th>CPF</th>
             <th>Título Acadêmico</th>
             <th>Ações</th>
         </tr>
@@ -21,6 +22,7 @@
         <tr th:each="professor : ${professoresInativos}">
             <td th:text="${professor.id}">1</td>
             <td th:text="${professor.nome}">Nome do Professor</td>
+            <td th:text="${professor.cpf}">000.000.000-00</td>
             <td th:text="${professor.tituloAcademico}">Título Acadêmico</td>
             <td>
                 <a th:href="@{/professores/reativar/{id}(id=${professor.id})}" class="button">Reativar</a>
