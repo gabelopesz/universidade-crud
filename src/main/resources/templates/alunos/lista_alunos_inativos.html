@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Alunos Inativos</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+  <h1>Lista de Alunos Inativos</h1>
+
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Matrícula</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="aluno : ${alunosInativos}">
+      <td th:text="${aluno.id}">1</td>
+      <td th:text="${aluno.nome}">Nome do Aluno</td>
+      <td th:text="${aluno.cpf}">CPF</td>
+      <td th:text="${aluno.matricula}">Matrícula</td>
+      <td>
+        <a th:href="@{/alunos/reativar/{id}(id=${aluno.id})}" class="button">Reativar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div class="flex-container">
+    <a th:href="@{/alunos/ativos}" class="button">Voltar à Lista de Alunos Ativos</a>
+  </div>
+</div>
+</body>
+</html>

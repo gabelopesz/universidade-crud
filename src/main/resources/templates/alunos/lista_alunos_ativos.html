@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Lista de Alunos Ativos</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+</head>
+<body>
+<div class="container">
+  <h1>Lista de Alunos Ativos</h1>
+
+  <!-- Formulário de pesquisa -->
+  <form th:action="@{/alunos/ativos}" method="get">
+    <input type="text" name="termo" placeholder="Pesquisar..." th:value="${termo}" />
+    <button type="submit" class="button">Buscar</button>
+  </form>
+
+  <div class="flex-container">
+    <a th:href="@{/alunos/novo}" class="button">Criar Novo Aluno</a>
+    <a th:href="@{/alunos/inativos}" class="button button-secondary">Visualizar Alunos Inativos</a>
+    <a th:href="@{ / }" class="button">Voltar ao Menu</a>
+  </div>
+
+  <!-- Tabela com alunos ativos -->
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Matrícula</th>
+      <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="aluno : ${alunosAtivos}">
+      <td th:text="${aluno.id}">1</td>
+      <td th:text="${aluno.nome}">Nome do Aluno</td>
+      <td th:text="${aluno.cpf}">CPF</td>
+      <td th:text="${aluno.matricula}">Matrícula</td>
+      <td>
+        <a th:href="@{/alunos/editar/{id}(id=${aluno.id})}" class="button">Editar</a>
+        <a th:href="@{/alunos/desativar/{id}(id=${aluno.id})}" class="button button-danger"
+           onclick="return confirm('Tem certeza que deseja desativar este aluno?');">Desativar</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
