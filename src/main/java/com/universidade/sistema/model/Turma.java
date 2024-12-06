@@ -21,10 +21,6 @@ public class Turma {
 
     private int ano;
 
-    private String horarioInicio;
-
-    private String horarioTermino;
-
     private boolean ativo = true;
 
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -76,22 +72,6 @@ public class Turma {
 
     public void setAno(int ano) {
         this.ano = ano;
-    }
-
-    public String getHorarioInicio() {
-        return horarioInicio;
-    }
-
-    public void setHorarioInicio(String horarioInicio) {
-        this.horarioInicio = horarioInicio;
-    }
-
-    public String getHorarioTermino() {
-        return horarioTermino;
-    }
-
-    public void setHorarioTermino(String horarioTermino) {
-        this.horarioTermino = horarioTermino;
     }
 
     public boolean isAtivo() {

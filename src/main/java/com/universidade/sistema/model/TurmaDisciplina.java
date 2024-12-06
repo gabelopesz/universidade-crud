@@ -17,6 +17,12 @@ public class TurmaDisciplina {
     @JoinColumn(name = "disciplina_id", nullable = false)
     private Disciplina disciplina;
 
+    private String horarioInicio;
+
+    private String horarioTermino;
+
+    private String diaSemana;
+
     // Getters e Setters
 
     public Long getId() {
@@ -42,4 +48,24 @@ public class TurmaDisciplina {
     public void setDisciplina(Disciplina disciplina) {
         this.disciplina = disciplina;
     }
+
+    public String getHorarioInicio() {
+        return horarioInicio;
+    }
+
+    public void setHorarioInicio(String horarioInicio) {
+        this.horarioInicio = horarioInicio;
+    }
+
+    public String getHorarioTermino() {
+        return horarioTermino;
+    }
+
+    public void setHorarioTermino(String horarioTermino) {
+        this.horarioTermino = horarioTermino;
+    }
+
+    public String getDiaSemana() {return diaSemana;}
+
+    public void setDiaSemana(String diaSemana) {this.diaSemana = diaSemana;}
 }

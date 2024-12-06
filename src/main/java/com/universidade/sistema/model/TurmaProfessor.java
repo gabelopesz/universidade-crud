@@ -18,7 +18,7 @@ public class TurmaProfessor {
     private Professor professor;
 
     @ManyToOne
-    @JoinColumn(name = "disciplina_id", nullable = false)
+    @JoinColumn(name = "disciplina_id", nullable = true)
     private Disciplina disciplina;
 
     // Getters e Setters

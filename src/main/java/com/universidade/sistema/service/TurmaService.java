@@ -21,8 +21,17 @@ public class TurmaService {
     }
 
     public Turma salvar(Turma turma) {
+        if (turma.getTurmaDisciplinas() != null) {
+            turma.getTurmaDisciplinas().forEach(td -> td.setTurma(turma));
+        }
+
+        if (turma.getTurmaProfessores() != null) {
+            turma.getTurmaProfessores().forEach(tp -> tp.setTurma(turma));
+        }
+
         return turmaRepository.save(turma);
     }
+
 
     public void desativar(Long id) {
         Turma turma = turmaRepository.findById(id)

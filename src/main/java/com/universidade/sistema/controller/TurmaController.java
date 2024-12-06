@@ -1,18 +1,15 @@
 package com.universidade.sistema.controller;
 
-import com.universidade.sistema.model.Turma;
-import com.universidade.sistema.model.Disciplina;
-import com.universidade.sistema.model.Professor;
-import com.universidade.sistema.model.Sala;
-import com.universidade.sistema.service.TurmaService;
-import com.universidade.sistema.service.DisciplinaService;
-import com.universidade.sistema.service.ProfessorService;
-import com.universidade.sistema.service.SalaService;
+import com.universidade.sistema.model.*;
+import com.universidade.sistema.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/turmas")
@@ -62,7 +59,56 @@ public class TurmaController {
     }
 
     @PostMapping("/salvar")
-    public String salvarTurma(@ModelAttribute Turma turma) {
+    public String salvarTurma(@ModelAttribute Turma turma,
+                              @RequestParam("disciplinas") List<Long> disciplinasIds,
+                              @RequestParam(value = "professores", required = false) List<Long> professoresIds,
+                              @RequestParam Map<String, String> horarios) {
+        // Valida se há disciplinas associadas
+        if (disciplinasIds == null || disciplinasIds.isEmpty()) {
+            throw new IllegalArgumentException("É necessário associar ao menos uma disciplina à turma.");
+        }
+
+        // Criação das associações de TurmaDisciplina com horários e dia da semana
+        List<TurmaDisciplina> turmaDisciplinas = disciplinasIds.stream()
+                .map(disciplinaId -> {
+                    Disciplina disciplina = disciplinaService.buscarPorId(disciplinaId);
+                    if (disciplina == null) {
+                        throw new IllegalArgumentException("Disciplina com ID " + disciplinaId + " não encontrada.");
+                    }
+
+                    TurmaDisciplina turmaDisciplina = new TurmaDisciplina();
+                    turmaDisciplina.setTurma(turma);
+                    turmaDisciplina.setDisciplina(disciplina);
+                    turmaDisciplina.setHorarioInicio(horarios.get("horarioInicio_" + disciplinaId));
+                    turmaDisciplina.setHorarioTermino(horarios.get("horarioTermino_" + disciplinaId));
+                    turmaDisciplina.setDiaSemana(horarios.get("diaSemana_" + disciplinaId));
+                    return turmaDisciplina;
+                }).collect(Collectors.toList());
+
+        turma.setTurmaDisciplinas(turmaDisciplinas);
+
+        // Criação das associações de TurmaProfessor
+        if (professoresIds != null && !professoresIds.isEmpty()) {
+            List<TurmaProfessor> turmaProfessores = professoresIds.stream()
+                    .map(professorId -> {
+                        Professor professor = professorService.buscarPorId(professorId);
+                        if (professor == null) {
+                            throw new IllegalArgumentException("Professor com ID " + professorId + " não encontrado.");
+                        }
+
+                        TurmaProfessor turmaProfessor = new TurmaProfessor();
+                        turmaProfessor.setTurma(turma);
+                        turmaProfessor.setProfessor(professor);
+
+                        // Atribui a primeira disciplina selecionada como padrão
+                        turmaProfessor.setDisciplina(turmaDisciplinas.get(0).getDisciplina());
+
+                        return turmaProfessor;
+                    }).collect(Collectors.toList());
+
+            turma.setTurmaProfessores(turmaProfessores);
+        }
+
         turmaService.salvar(turma);
         return "redirect:/turmas/ativas";
     }
@@ -70,10 +116,21 @@ public class TurmaController {
     @GetMapping("/editar/{id}")
     public String editarTurmaForm(@PathVariable("id") Long id, Model model) {
         Turma turma = turmaService.buscarPorId(id);
+
+        // Mapeia as disciplinas e professores associados
+        Map<Long, TurmaDisciplina> turmaDisciplinasMap = turma.getTurmaDisciplinas().stream()
+                .collect(Collectors.toMap(td -> td.getDisciplina().getId(), td -> td));
+
+        Map<Long, TurmaProfessor> turmaProfessoresMap = turma.getTurmaProfessores().stream()
+                .collect(Collectors.toMap(tp -> tp.getProfessor().getId(), tp -> tp));
+
         model.addAttribute("turma", turma);
         model.addAttribute("disciplinas", disciplinaService.listarAtivas());
         model.addAttribute("professores", professorService.listarAtivos());
         model.addAttribute("salas", salaService.listarAtivas());
+        model.addAttribute("turmaDisciplinasMap", turmaDisciplinasMap);
+        model.addAttribute("turmaProfessoresMap", turmaProfessoresMap);
+
         return "turmas/formulario_editar_turma";
     }
 
