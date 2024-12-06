@@ -19,8 +19,15 @@
   <input type="text" th:field="*{cpf}" placeholder="CPF do Aluno" required />
   <br/>
 
-  <label>Matricula:</label>
+  <label>Matrícula:</label>
   <input type="text" th:field="*{matricula}" placeholder="Matrícula do Aluno" required />
+  <br/>
+
+  <label>Turma:</label>
+  <select th:field="*{turma.id}" required>
+    <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nome}"
+            th:selected="${aluno.turma != null and aluno.turma.id == turma.id}"></option>
+  </select>
   <br/>
 
   <button type="submit">Salvar</button>

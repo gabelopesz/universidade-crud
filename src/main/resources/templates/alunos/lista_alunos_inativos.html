@@ -8,6 +8,11 @@
 <div class="container">
   <h1>Lista de Alunos Inativos</h1>
 
+  <form th:action="@{/alunos/inativos}" method="get">
+    <input type="text" name="termo" placeholder="Pesquisar..." th:value="${termo}" />
+    <button type="submit" class="button">Buscar</button>
+  </form>
+
   <table>
     <thead>
     <tr>
@@ -15,6 +20,7 @@
       <th>Nome</th>
       <th>CPF</th>
       <th>Matrícula</th>
+      <th>Turma</th>
       <th>Ações</th>
     </tr>
     </thead>
@@ -24,6 +30,7 @@
       <td th:text="${aluno.nome}">Nome do Aluno</td>
       <td th:text="${aluno.cpf}">CPF</td>
       <td th:text="${aluno.matricula}">Matrícula</td>
+      <td th:text="${aluno.turma != null ? aluno.turma.nome : 'Sem turma'}">Turma</td>
       <td>
         <a th:href="@{/alunos/reativar/{id}(id=${aluno.id})}" class="button">Reativar</a>
       </td>

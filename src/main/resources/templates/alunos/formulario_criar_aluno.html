@@ -20,8 +20,14 @@
     </div>
     <br/>
 
-    <label>Matricula:</label>
+    <label>Matrícula:</label>
     <input type="text" th:field="*{matricula}" placeholder="Matrícula do Aluno" required />
+    <br/>
+
+    <label>Turma:</label>
+    <select th:field="*{turma.id}" required>
+        <option th:each="turma : ${turmas}" th:value="${turma.id}" th:text="${turma.nome}"></option>
+    </select>
     <br/>
 
     <button type="submit">Salvar</button>
