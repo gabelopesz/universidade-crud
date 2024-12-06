@@ -17,6 +17,10 @@ public class AlunoService {
         return alunoRepository.findByAtivoTrue();
     }
 
+    public List<Aluno> listarInativos() {
+        return alunoRepository.findByAtivoFalse();
+    }
+
     public Aluno salvar(Aluno aluno) {
         return alunoRepository.save(aluno);
     }
@@ -38,7 +42,12 @@ public class AlunoService {
         alunoRepository.save(aluno);
     }
 
-    public List<Aluno> listarPorTurma(Long turmaId) {
-        return alunoRepository.findByTurmaId(turmaId);
+    public List<Aluno> pesquisarAtivos(String termo) {
+        return alunoRepository.findByNomeContainingIgnoreCaseAndAtivoTrue(termo);
+    }
+
+    public List<Aluno> pesquisarInativos(String termo) {
+        return alunoRepository.findByNomeContainingIgnoreCaseAndAtivoFalse(termo);
     }
 }
+

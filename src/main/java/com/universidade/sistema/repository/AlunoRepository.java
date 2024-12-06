@@ -10,5 +10,9 @@ import java.util.List;
 public interface AlunoRepository extends JpaRepository<Aluno, Long> {
     List<Aluno> findByAtivoTrue();
 
-    List<Aluno> findByTurmaId(Long turmaId);
+    List<Aluno> findByAtivoFalse();
+
+    List<Aluno> findByNomeContainingIgnoreCaseAndAtivoTrue(String termo);
+
+    List<Aluno> findByNomeContainingIgnoreCaseAndAtivoFalse(String termo);
 }

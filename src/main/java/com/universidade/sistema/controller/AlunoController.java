@@ -18,15 +18,25 @@ public class AlunoController {
     @Autowired
     private TurmaService turmaService;
 
-    @GetMapping
-    public String listarAlunos(@RequestParam(value = "turmaId", required = false) Long turmaId, Model model) {
-        if (turmaId != null) {
-            model.addAttribute("alunos", alunoService.listarPorTurma(turmaId));
+    @GetMapping("/ativos")
+    public String listarAlunosAtivos(@RequestParam(value = "termo", required = false) String termo, Model model) {
+        if (termo != null && !termo.isEmpty()) {
+            model.addAttribute("alunos", alunoService.pesquisarAtivos(termo));
         } else {
             model.addAttribute("alunos", alunoService.listarAtivos());
         }
         model.addAttribute("turmas", turmaService.listarAtivas());
-        return "alunos/lista_alunos";
+        return "alunos/lista_alunos_ativos";
+    }
+
+    @GetMapping("/inativos")
+    public String listarAlunosInativos(@RequestParam(value = "termo", required = false) String termo, Model model) {
+        if (termo != null && !termo.isEmpty()) {
+            model.addAttribute("alunosInativos", alunoService.pesquisarInativos(termo));
+        } else {
+            model.addAttribute("alunosInativos", alunoService.listarInativos());
+        }
+        return "alunos/lista_alunos_inativos";
     }
 
     @GetMapping("/novo")
@@ -39,7 +49,7 @@ public class AlunoController {
     @PostMapping("/salvar")
     public String salvarAluno(@ModelAttribute Aluno aluno) {
         alunoService.salvar(aluno);
-        return "redirect:/alunos";
+        return "redirect:/alunos/ativos";
     }
 
     @GetMapping("/editar/{id}")
@@ -53,12 +63,13 @@ public class AlunoController {
     @GetMapping("/desativar/{id}")
     public String desativarAluno(@PathVariable("id") Long id) {
         alunoService.desativar(id);
-        return "redirect:/alunos";
+        return "redirect:/alunos/ativos";
     }
 
     @GetMapping("/reativar/{id}")
     public String reativarAluno(@PathVariable("id") Long id) {
         alunoService.reativar(id);
-        return "redirect:/alunos";
+        return "redirect:/alunos/inativos";
     }
 }
+
