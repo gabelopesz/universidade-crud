@@ -4,7 +4,6 @@ import com.universidade.sistema.model.Turma;
 import com.universidade.sistema.repository.TurmaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -43,6 +42,7 @@ public class TurmaService {
         return turmaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Turma não encontrada"));
     }
+
     public List<Turma> pesquisarTurmas(Long disciplinaId, Long professorId, Long salaId) {
         return turmaRepository.findByDisciplinaIdAndProfessorIdAndSalaId(disciplinaId, professorId, salaId);
     }

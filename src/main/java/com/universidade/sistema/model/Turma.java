@@ -1,6 +1,8 @@
 package com.universidade.sistema.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Turma {
@@ -10,28 +12,31 @@ public class Turma {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "disciplina_id")
-    private Disciplina disciplina;
-
-    @ManyToOne
-    @JoinColumn(name = "professor_id")  // Relacionamento correto com Professor
-    private Professor professor;
-
-    @ManyToOne
-    @JoinColumn(name = "sala_id")
+    @JoinColumn(name = "sala_id", nullable = false)
     private Sala sala;
 
     private String nome;
 
-    private String dia_da_semana;
+    private String semestre;
 
-    private String horário_inicio;
+    private int ano;
 
-    private String horário_termino;
+    private String horarioInicio;
+
+    private String horarioTermino;
 
     private boolean ativo = true;
 
-    // Getters e setters
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Aluno> alunos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TurmaDisciplina> turmaDisciplinas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TurmaProfessor> turmaProfessores = new ArrayList<>();
+
+    // Getters e Setters
 
     public Long getId() {
         return id;
@@ -39,22 +44,6 @@ public class Turma {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
-    }
-
-    public Professor getProfessor() {
-        return professor;
-    }
-
-    public void setProfessor(Professor professor) {
-        this.professor = professor;
     }
 
     public Sala getSala() {
@@ -69,26 +58,40 @@ public class Turma {
         return nome;
     }
 
-    public void setNome(String nome) {this.nome = nome;}
-
-    public String getDia_da_semana() {return dia_da_semana;}
-
-    public void setDia_da_semana(String dia_da_semana) {this.dia_da_semana = dia_da_semana;}
-
-    public String getHorário_inicio() {
-        return horário_inicio;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public void setHorário_inicio(String horário_inicio) {
-        this.horário_inicio = horário_inicio;
+    public String getSemestre() {
+        return semestre;
     }
 
-    public String getHorário_termino() {
-        return horário_termino;
+    public void setSemestre(String semestre) {
+        this.semestre = semestre;
     }
 
-    public void setHorário_termino(String horário_termino) {
-        this.horário_termino = horário_termino;
+    public int getAno() {
+        return ano;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public String getHorarioInicio() {
+        return horarioInicio;
+    }
+
+    public void setHorarioInicio(String horarioInicio) {
+        this.horarioInicio = horarioInicio;
+    }
+
+    public String getHorarioTermino() {
+        return horarioTermino;
+    }
+
+    public void setHorarioTermino(String horarioTermino) {
+        this.horarioTermino = horarioTermino;
     }
 
     public boolean isAtivo() {
@@ -97,5 +100,29 @@ public class Turma {
 
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+    public List<TurmaDisciplina> getTurmaDisciplinas() {
+        return turmaDisciplinas;
+    }
+
+    public void setTurmaDisciplinas(List<TurmaDisciplina> turmaDisciplinas) {
+        this.turmaDisciplinas = turmaDisciplinas;
+    }
+
+    public List<TurmaProfessor> getTurmaProfessores() {
+        return turmaProfessores;
+    }
+
+    public void setTurmaProfessores(List<TurmaProfessor> turmaProfessores) {
+        this.turmaProfessores = turmaProfessores;
     }
 }
