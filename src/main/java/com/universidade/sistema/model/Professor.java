@@ -1,6 +1,7 @@
 package com.universidade.sistema.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,10 +20,11 @@ public class Professor {
 
     private boolean ativo = true;
 
-    @OneToMany(mappedBy = "professor")
-    private List<Turma> turmas;
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TurmaProfessor> turmaProfessores = new ArrayList<>();
 
-    // Getters e setters
+    // Getters e Setters
+
     public Long getId() {
         return id;
     }
@@ -39,9 +41,13 @@ public class Professor {
         this.nome = nome;
     }
 
-    public String getCpf() {return cpf;}
+    public String getCpf() {
+        return cpf;
+    }
 
-    public void setCpf(String cpf) {this.cpf = cpf;}
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
 
     public String getTituloAcademico() {
         return tituloAcademico;
@@ -59,11 +65,11 @@ public class Professor {
         this.ativo = ativo;
     }
 
-    public List<Turma> getTurmas() {
-        return turmas;
+    public List<TurmaProfessor> getTurmaProfessores() {
+        return turmaProfessores;
     }
 
-    public void setTurmas(List<Turma> turmas) {
-        this.turmas = turmas;
+    public void setTurmaProfessores(List<TurmaProfessor> turmaProfessores) {
+        this.turmaProfessores = turmaProfessores;
     }
 }
