@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Lista de Turmas</title>
+    <title>Lista de Turmas Ativas</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <style>
         .message {
@@ -19,9 +19,9 @@
 
         .button-group {
             display: flex;
-            gap: 10px; /* Espaço entre os botões */
-            flex-wrap: wrap; /* Permite quebra de linha se necessário */
-            justify-content: flex-start; /* Alinha os botões à esquerda */
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
         }
 
         .button {
@@ -56,7 +56,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Lista de Turmas</h1>
+    <h1>Lista de Turmas Ativas</h1>
 
     <form th:action="@{/turmas/ativas}" method="get" class="form-actions">
         <label for="disciplinaId">Disciplina:</label>
@@ -91,8 +91,8 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Disciplinas</th>
-            <th>Professores</th>
+            <th>Ano/Semestre</th>
+            <th>Disciplinas e Professores</th>
             <th>Sala</th>
             <th>Horários</th>
             <th>Ações</th>
@@ -102,14 +102,12 @@
         <tr th:each="turma : ${turmas}">
             <td th:text="${turma.id}">1</td>
             <td th:text="${turma.nome}">Nome</td>
+            <td th:text="${turma.ano} + ' / ' + ${turma.semestre}">2024 / 1º</td>
             <td>
                 <ul>
-                    <li th:each="td : ${turma.turmaDisciplinas}" th:text="${td.disciplina.nome}"></li>
-                </ul>
-            </td>
-            <td>
-                <ul>
-                    <li th:each="tp : ${turma.turmaProfessores}" th:text="${tp.professor.nome}"></li>
+                    <li th:each="td : ${turma.turmaDisciplinas}">
+                        <span th:text="${td.disciplina.nome} + ' - Professor: ' + (${td.turmaProfessores.size() > 0 ? td.turmaProfessores[0].professor.nome : 'Não atribuído'})"></span>
+                    </li>
                 </ul>
             </td>
             <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
@@ -125,7 +123,6 @@
             </td>
             <td>
                 <div class="button-group">
-                    <a th:href="@{/turmas/editar/{id}(id=${turma.id})}" class="button">Editar</a>
                     <a th:href="@{/turmas/desativar/{id}(id=${turma.id})}" class="button button-danger"
                        onclick="return confirm('Deseja realmente inativar esta turma?');">Desativar</a>
                 </div>
@@ -134,7 +131,7 @@
         </tbody>
     </table>
 
-    <!-- Botão de retorno ao menu -->
+
     <div class="return-button">
         <a th:href="@{ / }" class="button">Voltar ao Menu</a>
     </div>

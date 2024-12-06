@@ -1,9 +1,29 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Lista de Turmas Inativas</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <style>
+        .message {
+            color: red;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
         .button {
             padding: 8px 16px;
             text-decoration: none;
@@ -19,79 +39,76 @@
             background-color: #0056b3;
         }
 
-        .message {
-            color: red;
-            font-style: italic;
-            margin-top: 10px;
+        .button-danger {
+            background-color: #f44336;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
+        .button-danger:hover {
+            background-color: #d32f2f;
         }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        th {
-            background-color: #f2f2f2;
+        .return-button {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
         }
     </style>
 </head>
 <body>
-<h1>Lista de Turmas Inativas</h1>
+<div class="container">
+    <h1>Lista de Turmas Inativas</h1>
 
-<div th:if="${turmasInativas.size() == 0}" class="message">
-    Nenhuma turma inativa encontrada.
+    <div th:if="${turmasInativas.size() == 0}" class="message">
+        Nenhuma turma inativa encontrada.
+    </div>
+
+    <table th:if="${turmasInativas.size() > 0}">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Ano/Semestre</th>
+            <th>Disciplinas e Professores</th>
+            <th>Sala</th>
+            <th>Horários</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="turma : ${turmasInativas}">
+            <td th:text="${turma.id}">1</td>
+            <td th:text="${turma.nome}">Nome</td>
+            <td th:text="${turma.ano} + ' / ' + ${turma.semestre}">2024 / 1º</td>
+            <td>
+                <ul>
+                    <li th:each="td : ${turma.turmaDisciplinas}">
+                        <span th:text="${td.disciplina.nome} + ' - Professor: ' + (${td.turmaProfessores.size() > 0 ? td.turmaProfessores[0].professor.nome : 'Não atribuído'})"></span>
+                    </li>
+                </ul>
+            </td>
+            <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
+            <td>
+                <ul>
+                    <li th:each="td : ${turma.turmaDisciplinas}">
+                        <span th:text="${td.disciplina.nome} + ': '"></span>
+                        <span th:text="${td.horarioInicio}"></span>
+                        <span th:text="' - ' + ${td.horarioTermino}"></span>
+                        <span th:text="' (' + ${td.diaSemana} + ')'"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <div class="button-group">
+                    <a th:href="@{/turmas/reativar/{id}(id=${turma.id})}" class="button">Reativar</a>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="return-button">
+        <a th:href="@{/turmas/ativas}" class="button">Voltar à Lista de Turmas Ativas</a>
+    </div>
 </div>
-
-<table th:if="${turmasInativas.size() > 0}">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Nome</th>
-        <th>Disciplinas</th>
-        <th>Professores</th>
-        <th>Sala</th>
-        <th>Horários</th>
-        <th>Ações</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="turma : ${turmasInativas}">
-        <td th:text="${turma.id}">1</td>
-        <td th:text="${turma.nome != null ? turma.nome : 'Não definido'}">Nome</td>
-        <td>
-            <ul>
-                <li th:each="td : ${turma.turmaDisciplinas}" th:text="${td.disciplina.nome}"></li>
-            </ul>
-        </td>
-        <td>
-            <ul>
-                <li th:each="tp : ${turma.turmaProfessores}" th:text="${tp.professor.nome}"></li>
-            </ul>
-        </td>
-        <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
-        <td>
-            <ul>
-                <li th:each="td : ${turma.turmaDisciplinas}">
-                    <span th:text="${td.disciplina.nome} + ': '"></span>
-                    <span th:text="${td.horarioInicio}"></span>
-                    <span th:text="' - ' + ${td.horarioTermino}"></span>
-                    <span th:text="' (' + ${td.diaSemana} + ')'"></span>
-                </li>
-            </ul>
-        </td>
-        <td>
-            <a th:href="@{/turmas/reativar/{id}(id=${turma.id})}" class="button">Reativar</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<a th:href="@{/turmas/ativas}" class="button">Voltar à Lista de Turmas Ativas</a>
 </body>
 </html>

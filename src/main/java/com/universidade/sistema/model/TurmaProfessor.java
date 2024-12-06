@@ -10,16 +10,12 @@ public class TurmaProfessor {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "turma_id", nullable = false)
-    private Turma turma;
+    @JoinColumn(name = "turma_disciplina_id", nullable = false)
+    private TurmaDisciplina turmaDisciplina;
 
     @ManyToOne
     @JoinColumn(name = "professor_id", nullable = false)
     private Professor professor;
-
-    @ManyToOne
-    @JoinColumn(name = "disciplina_id", nullable = true)
-    private Disciplina disciplina;
 
     // Getters e Setters
 
@@ -31,12 +27,12 @@ public class TurmaProfessor {
         this.id = id;
     }
 
-    public Turma getTurma() {
-        return turma;
+    public TurmaDisciplina getTurmaDisciplina() {
+        return turmaDisciplina;
     }
 
-    public void setTurma(Turma turma) {
-        this.turma = turma;
+    public void setTurmaDisciplina(TurmaDisciplina turmaDisciplina) {
+        this.turmaDisciplina = turmaDisciplina;
     }
 
     public Professor getProfessor() {
@@ -45,13 +41,5 @@ public class TurmaProfessor {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
-    }
-
-    public Disciplina getDisciplina() {
-        return disciplina;
-    }
-
-    public void setDisciplina(Disciplina disciplina) {
-        this.disciplina = disciplina;
     }
 }

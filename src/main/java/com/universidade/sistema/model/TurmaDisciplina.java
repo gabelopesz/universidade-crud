@@ -1,6 +1,8 @@
 package com.universidade.sistema.model;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class TurmaDisciplina {
@@ -22,6 +24,9 @@ public class TurmaDisciplina {
     private String horarioTermino;
 
     private String diaSemana;
+
+    @OneToMany(mappedBy = "turmaDisciplina", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TurmaProfessor> turmaProfessores = new ArrayList<>();
 
     // Getters e Setters
 
@@ -65,7 +70,22 @@ public class TurmaDisciplina {
         this.horarioTermino = horarioTermino;
     }
 
-    public String getDiaSemana() {return diaSemana;}
+    public String getDiaSemana() {
+        return diaSemana;
+    }
 
-    public void setDiaSemana(String diaSemana) {this.diaSemana = diaSemana;}
+    public void setDiaSemana(String diaSemana) {
+        this.diaSemana = diaSemana;
+    }
+
+    public List<TurmaProfessor> getTurmaProfessores() {
+        return turmaProfessores;
+    }
+
+    public void setTurmaProfessores(List<TurmaProfessor> turmaProfessores) {
+        this.turmaProfessores = turmaProfessores;
+    }
+
+    public void setProfessor(Professor professor) {
+    }
 }

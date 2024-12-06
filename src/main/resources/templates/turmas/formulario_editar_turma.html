@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${turma.id == null ? 'Criar Nova Turma' : 'Editar Turma'}"></title>
+    <title th:text="'Editar Turma'"></title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}" />
 </head>
 <body>
-<h1 th:text="${turma.id == null ? 'Criar Nova Turma' : 'Editar Turma'}"></h1>
+<h1>Editar Turma</h1>
 
-<form th:action="@{/turmas/salvar}" th:object="${turma}" method="post">
+<form th:action="@{/turmas/editar}" th:object="${turma}" method="post">
 
     <!-- Campo oculto para ID -->
     <input type="hidden" th:field="*{id}" />
@@ -15,6 +15,20 @@
     <!-- Nome da Turma -->
     <label for="nome">Nome:</label>
     <input type="text" th:field="*{nome}" id="nome" placeholder="Nome da Turma" required />
+    <br/>
+
+    <!-- Ano -->
+    <label for="ano">Ano:</label>
+    <input type="number" th:field="*{ano}" id="ano" placeholder="Digite o ano" required />
+    <br/>
+
+    <!-- Semestre -->
+    <label for="semestre">Semestre:</label>
+    <select th:field="*{semestre}" id="semestre" required>
+        <option value="" disabled>Selecione o semestre</option>
+        <option value="1º">1º Semestre</option>
+        <option value="2º">2º Semestre</option>
+    </select>
     <br/>
 
     <!-- Sala -->
@@ -26,58 +40,52 @@
     </select>
     <br/>
 
-    <!-- Disciplinas, Dias e Horários -->
-    <label>Disciplinas, Dias e Horários:</label>
-    <div th:each="disciplina : ${disciplinas}" style="margin-bottom: 15px; padding-left: 10px; border-left: 2px solid #ccc;">
-        <!-- Checkbox para selecionar a disciplina -->
-        <input type="checkbox" name="disciplinas" th:value="${disciplina.id}" id="disciplina_${disciplina.id}"
-               th:checked="${turmaDisciplinasMap.containsKey(disciplina.id)}" />
-        <label th:for="'disciplina_' + ${disciplina.id}" th:text="${disciplina.nome}"></label>
+    <!-- Disciplinas Associadas -->
+    <h2>Disciplinas Associadas</h2>
+    <div th:each="turmaDisciplina : ${turma.turmaDisciplinas}" style="margin-bottom: 15px; padding-left: 10px; border-left: 2px solid #ccc;">
+        <strong th:text="'Disciplina: ' + ${turmaDisciplina.disciplina.nome}"></strong>
         <br/>
 
-        <!-- Campos de Dias da Semana e Horários -->
-        <div style="margin-left: 20px;">
-            <!-- Dias da Semana -->
-            <label for="diaSemana_${disciplina.id}">Dias da Semana:</label>
-            <select th:name="'diaSemana_' + ${disciplina.id}" id="diaSemana_${disciplina.id}">
-                <option value="Segunda-feira" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Segunda-feira'}">Segunda-feira</option>
-                <option value="Terça-feira" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Terça-feira'}">Terça-feira</option>
-                <option value="Quarta-feira" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Quarta-feira'}">Quarta-feira</option>
-                <option value="Quinta-feira" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Quinta-feira'}">Quinta-feira</option>
-                <option value="Sexta-feira" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Sexta-feira'}">Sexta-feira</option>
-                <option value="Sábado" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Sábado'}">Sábado</option>
-                <option value="Domingo" th:selected="${turmaDisciplinasMap.get(disciplina.id)?.diaSemana == 'Domingo'}">Domingo</option>
-            </select>
-            <br/>
+        <!-- Dias da Semana -->
+        <label for="diaSemana_${turmaDisciplina.id}">Dia da Semana:</label>
+        <select th:name="'diaSemana_' + ${turmaDisciplina.id}" id="diaSemana_${turmaDisciplina.id}" required>
+            <option value="Segunda-feira" th:selected="${turmaDisciplina.diaSemana == 'Segunda-feira'}">Segunda-feira</option>
+            <option value="Terça-feira" th:selected="${turmaDisciplina.diaSemana == 'Terça-feira'}">Terça-feira</option>
+            <option value="Quarta-feira" th:selected="${turmaDisciplina.diaSemana == 'Quarta-feira'}">Quarta-feira</option>
+            <option value="Quinta-feira" th:selected="${turmaDisciplina.diaSemana == 'Quinta-feira'}">Quinta-feira</option>
+            <option value="Sexta-feira" th:selected="${turmaDisciplina.diaSemana == 'Sexta-feira'}">Sexta-feira</option>
+        </select>
+        <br/>
 
-            <!-- Horários -->
-            <label for="horarioInicio_${disciplina.id}">Horário de Início:</label>
-            <input type="time" th:name="'horarioInicio_' + ${disciplina.id}" id="horarioInicio_${disciplina.id}"
-                   th:value="${turmaDisciplinasMap.get(disciplina.id)?.horarioInicio}" />
-            <br/>
+        <!-- Horários -->
+        <label for="horarioInicio_${turmaDisciplina.id}">Horário de Início:</label>
+        <input type="time" th:name="'horarioInicio_' + ${turmaDisciplina.id}" id="horarioInicio_${turmaDisciplina.id}"
+               th:value="${turmaDisciplina.horarioInicio}" required />
+        <br/>
 
-            <label for="horarioTermino_${disciplina.id}">Horário de Término:</label>
-            <input type="time" th:name="'horarioTermino_' + ${disciplina.id}" id="horarioTermino_${disciplina.id}"
-                   th:value="${turmaDisciplinasMap.get(disciplina.id)?.horarioTermino}" />
-        </div>
+        <label for="horarioTermino_${turmaDisciplina.id}">Horário de Término:</label>
+        <input type="time" th:name="'horarioTermino_' + ${turmaDisciplina.id}" id="horarioTermino_${turmaDisciplina.id}"
+               th:value="${turmaDisciplina.horarioTermino}" required />
+        <br/>
+
+        <!-- Professor -->
+        <label for="professor_${turmaDisciplina.id}">Professor:</label>
+        <select th:name="'professor_' + ${turmaDisciplina.id}" id="professor_${turmaDisciplina.id}" required>
+            <option value="" disabled>Selecione um professor</option>
+            <option th:each="professor : ${professores}"
+                    th:value="${professor.id}"
+                    th:text="${professor.nome}"
+                    th:selected="${turmaDisciplina.turmaProfessores != null
+                          and !turmaDisciplina.turmaProfessores.isEmpty()
+                          and turmaDisciplina.turmaProfessores[0].professor.id == professor.id}">
+            </option>
+        </select>
+        <br/>
     </div>
     <br/>
 
-    <!-- Professores -->
-    <!-- Rótulo para a seção de professores -->
-    <label>Professores:</label>
-    <div th:each="professor : ${professores}">
-        <!-- Checkbox para cada professor -->
-        <input type="checkbox" name="professores" th:value="${professor.id}" id="professor_${professor.id}"
-               th:checked="${turmaProfessoresMap.containsKey(professor.id)}" />
-        <label th:for="'professor_' + ${professor.id}" th:text="${professor.nome}"></label>
-    </div>
-
-
-    <br/>
-
-    <!-- Botão Salvar -->
-    <button type="submit">Salvar</button>
+    <!-- Botão Atualizar -->
+    <button type="submit">Atualizar</button>
 </form>
 
 <!-- Link para voltar à lista -->

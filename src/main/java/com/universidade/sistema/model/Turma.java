@@ -29,9 +29,6 @@ public class Turma {
     @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TurmaDisciplina> turmaDisciplinas = new ArrayList<>();
 
-    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TurmaProfessor> turmaProfessores = new ArrayList<>();
-
     // Getters e Setters
 
     public Long getId() {
@@ -96,13 +93,5 @@ public class Turma {
 
     public void setTurmaDisciplinas(List<TurmaDisciplina> turmaDisciplinas) {
         this.turmaDisciplinas = turmaDisciplinas;
-    }
-
-    public List<TurmaProfessor> getTurmaProfessores() {
-        return turmaProfessores;
-    }
-
-    public void setTurmaProfessores(List<TurmaProfessor> turmaProfessores) {
-        this.turmaProfessores = turmaProfessores;
     }
 }
