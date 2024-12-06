@@ -3,10 +3,12 @@ package com.universidade.sistema.controller;
 import com.universidade.sistema.model.Aluno;
 import com.universidade.sistema.service.AlunoService;
 import com.universidade.sistema.service.TurmaService;
+import com.universidade.sistema.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.io.IOException;
 
 @Controller
 @RequestMapping("/alunos")
@@ -17,6 +19,10 @@ public class AlunoController {
 
     @Autowired
     private TurmaService turmaService;
+
+    @Autowired
+    private PdfService pdfService;
+
 
     @GetMapping("/ativos")
     public String listarAlunosAtivos(@RequestParam(value = "termo", required = false) String termo, Model model) {
@@ -71,5 +77,23 @@ public class AlunoController {
         alunoService.reativar(id);
         return "redirect:/alunos/inativos";
     }
+
+    @GetMapping("/exportar-horario/{id}")
+    public String exportarHorarioAluno(@PathVariable("id") Long id, Model model) {
+        Aluno aluno = alunoService.buscarPorId(id);
+
+        try {
+            pdfService.exportarHorarioAluno(aluno);
+            model.addAttribute("mensagem", "PDF gerado com sucesso em: ~/Documentos/Faculdade/sexto-periodo/persistencia/horarios_alunos");
+        } catch (IOException e) {
+            model.addAttribute("mensagem", "Erro ao gerar PDF: " + e.getMessage());
+        }
+
+        return "redirect:/alunos/ativos";
+    }
+
+
+
+
 }
 

@@ -8,17 +8,20 @@
 <div class="container">
   <h1>Lista de Alunos Ativos</h1>
 
+  <!-- Formulário de Pesquisa -->
   <form th:action="@{/alunos/ativos}" method="get">
     <input type="text" name="termo" placeholder="Pesquisar..." th:value="${termo}" />
     <button type="submit" class="button">Buscar</button>
   </form>
 
+  <!-- Botões de Ação -->
   <div class="flex-container">
     <a th:href="@{/alunos/novo}" class="button">Criar Novo Aluno</a>
     <a th:href="@{/alunos/inativos}" class="button button-secondary">Visualizar Alunos Inativos</a>
     <a th:href="@{ / }" class="button">Voltar ao Menu</a>
   </div>
 
+  <!-- Tabela de Alunos -->
   <table>
     <thead>
     <tr>
@@ -41,6 +44,7 @@
         <a th:href="@{/alunos/editar/{id}(id=${aluno.id})}" class="button">Editar</a>
         <a th:href="@{/alunos/desativar/{id}(id=${aluno.id})}" class="button button-danger"
            onclick="return confirm('Tem certeza que deseja desativar este aluno?');">Desativar</a>
+        <a th:href="@{/alunos/exportar-horario/{id}(id=${aluno.id})}" class="button button-secondary">Exportar Horário</a>
       </td>
     </tr>
     </tbody>
