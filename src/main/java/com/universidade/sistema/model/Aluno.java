@@ -1,7 +1,6 @@
 package com.universidade.sistema.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 public class Aluno {
@@ -12,23 +11,17 @@ public class Aluno {
 
     private String nome;
 
-    @Column(unique = true, nullable = false)
     private String cpf;
 
     private String matricula;
 
     private boolean ativo = true;
 
-    @ManyToMany
-    @JoinTable(
-        name = "aluno_turma",
-        joinColumns = @JoinColumn(name = "aluno_id"),
-        inverseJoinColumns = @JoinColumn(name = "turma_id")
-    )
-    private List<Turma> turmas;
+    @ManyToOne
+    @JoinColumn(name = "turma_id")
+    private Turma turma;
 
-    // Getters e setters
-
+    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -69,11 +62,11 @@ public class Aluno {
         this.ativo = ativo;
     }
 
-    public List<Turma> getTurmas() {
-        return turmas;
+    public Turma getTurma() {
+        return turma;
     }
 
-    public void setTurmas(List<Turma> turmas) {
-        this.turmas = turmas;
+    public void setTurma(Turma turma) {
+        this.turma = turma;
     }
 }
