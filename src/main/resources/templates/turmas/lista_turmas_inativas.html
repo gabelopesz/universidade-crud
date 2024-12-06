@@ -18,21 +18,45 @@
         .button:hover {
             background-color: #0056b3;
         }
+
+        .message {
+            color: red;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
 <h1>Lista de Turmas Inativas</h1>
 
-<table>
+<div th:if="${turmasInativas.size() == 0}" class="message">
+    Nenhuma turma inativa encontrada.
+</div>
+
+<table th:if="${turmasInativas.size() > 0}">
     <thead>
     <tr>
         <th>ID</th>
         <th>Nome</th>
-        <th>Disciplina</th>
-        <th>Professor</th>
+        <th>Disciplinas</th>
+        <th>Professores</th>
         <th>Sala</th>
-        <th>Dia da Semana</th>
-        <th>Horário</th>
+        <th>Horários</th>
         <th>Ações</th>
     </tr>
     </thead>
@@ -40,11 +64,27 @@
     <tr th:each="turma : ${turmasInativas}">
         <td th:text="${turma.id}">1</td>
         <td th:text="${turma.nome != null ? turma.nome : 'Não definido'}">Nome</td>
-        <td th:text="${turma.disciplina != null ? turma.disciplina.nome : 'Não definida'}">Disciplina</td>
-        <td th:text="${turma.professor != null ? turma.professor.nome : 'Não definido'}">Professor</td>
+        <td>
+            <ul>
+                <li th:each="td : ${turma.turmaDisciplinas}" th:text="${td.disciplina.nome}"></li>
+            </ul>
+        </td>
+        <td>
+            <ul>
+                <li th:each="tp : ${turma.turmaProfessores}" th:text="${tp.professor.nome}"></li>
+            </ul>
+        </td>
         <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
-        <td th:text="${turma.dia_da_semana != null ? turma.dia_da_semana : 'Não definido'}">Dia</td>
-        <td th:text="${turma.horário_inicio != null && turma.horário_termino != null ? turma.horário_inicio + ' - ' + turma.horário_termino : 'Horário não definido'}">Horário</td>
+        <td>
+            <ul>
+                <li th:each="td : ${turma.turmaDisciplinas}">
+                    <span th:text="${td.disciplina.nome} + ': '"></span>
+                    <span th:text="${td.horarioInicio}"></span>
+                    <span th:text="' - ' + ${td.horarioTermino}"></span>
+                    <span th:text="' (' + ${td.diaSemana} + ')'"></span>
+                </li>
+            </ul>
+        </td>
         <td>
             <a th:href="@{/turmas/reativar/{id}(id=${turma.id})}" class="button">Reativar</a>
         </td>

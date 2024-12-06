@@ -8,43 +8,68 @@
 <h1>Criar Nova Turma</h1>
 
 <form th:action="@{/turmas/salvar}" th:object="${turma}" method="post">
-    <label>Disciplina:</label>
-    <select th:field="*{disciplina.id}">
-        <option th:each="disciplina : ${disciplinas}" th:value="${disciplina.id}" th:text="${disciplina.nome}"></option>
-    </select>
+
+    <!-- Nome da Turma -->
+    <label for="nome">Nome da Turma:</label>
+    <input type="text" th:field="*{nome}" id="nome" placeholder="Digite o nome da turma" required />
     <br/>
 
-    <label>Professor:</label>
-    <select th:field="*{professor.id}">
-        <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
-    </select>
-    <br/>
-
-    <label>Sala:</label>
-    <select th:field="*{sala.id}">
+    <!-- Sala -->
+    <label for="sala">Sala:</label>
+    <select th:field="*{sala.id}" id="sala" required>
+        <option value="" disabled selected>Selecione uma Sala</option>
         <option th:each="sala : ${salas}" th:value="${sala.id}" th:text="${sala.nome}"></option>
     </select>
     <br/>
 
-    <label>Nome:</label>
-    <input type="text" th:field="*{nome}" placeholder="Nome da Turma" required />
+    <!-- Disciplinas, Dias e Horários -->
+    <label>Disciplinas, Dias e Horários:</label>
+    <div th:each="disciplina : ${disciplinas}" style="margin-bottom: 20px; padding-left: 10px; border-left: 2px solid #ccc;">
+        <!-- Checkbox para selecionar a disciplina -->
+        <input type="checkbox" name="disciplinas" th:value="${disciplina.id}" id="disciplina_${disciplina.id}" />
+        <label th:for="'disciplina_' + ${disciplina.id}" th:text="${disciplina.nome}"></label>
+        <br/>
+
+        <!-- Campo para selecionar dia da semana -->
+        <div style="margin-left: 20px;">
+            <label for="diaSemana_${disciplina.id}">Dias da Semana:</label>
+            <select th:name="'diaSemana_' + ${disciplina.id}" id="diaSemana_${disciplina.id}">
+                <option value="" disabled selected>Selecione um dia</option>
+                <option value="Segunda-feira">Segunda-feira</option>
+                <option value="Terça-feira">Terça-feira</option>
+                <option value="Quarta-feira">Quarta-feira</option>
+                <option value="Quinta-feira">Quinta-feira</option>
+                <option value="Sexta-feira">Sexta-feira</option>
+                <option value="Sábado">Sábado</option>
+                <option value="Domingo">Domingo</option>
+            </select>
+            <br/>
+
+            <!-- Campos de horário -->
+            <label for="horarioInicio_${disciplina.id}">Horário de Início:</label>
+            <input type="time" th:name="'horarioInicio_' + ${disciplina.id}" id="horarioInicio_${disciplina.id}" />
+            <br/>
+
+            <label for="horarioTermino_${disciplina.id}">Horário de Término:</label>
+            <input type="time" th:name="'horarioTermino_' + ${disciplina.id}" id="horarioTermino_${disciplina.id}" />
+        </div>
+    </div>
     <br/>
 
-    <label>Dia da Semana:</label>
-    <input type="text" th:field="*{dia_da_semana}" placeholder="Ex: Segunda-feira" required />
+    <!-- Professores -->
+    <label for="professores">Professores:</label>
+    <select name="professores" id="professores" multiple>
+        <option value="" disabled>Selecione os professores</option>
+        <option th:each="professor : ${professores}" th:value="${professor.id}" th:text="${professor.nome}"></option>
+    </select>
+    <div class="info">Segure a tecla CTRL ou Command (Mac) para selecionar múltiplos itens.</div>
     <br/>
 
-    <label>Horário de Início:</label>
-    <input type="time" th:field="*{horário_inicio}" required />
-    <br/>
-
-    <label>Horário de Término:</label>
-    <input type="time" th:field="*{horário_termino}" required />
-    <br/>
-
+    <!-- Botão Salvar -->
     <button type="submit">Salvar</button>
 </form>
 
+<!-- Link para voltar à lista -->
 <a th:href="@{/turmas/ativas}">Voltar à Lista</a>
 </body>
 </html>

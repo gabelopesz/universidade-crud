@@ -17,6 +17,13 @@
             margin-bottom: 20px;
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px; /* Espaço entre os botões */
+            flex-wrap: wrap; /* Permite quebra de linha se necessário */
+            justify-content: flex-start; /* Alinha os botões à esquerda */
+        }
+
         .button {
             padding: 8px 16px;
             text-decoration: none;
@@ -30,6 +37,14 @@
 
         .button:hover {
             background-color: #0056b3;
+        }
+
+        .button-danger {
+            background-color: #f44336;
+        }
+
+        .button-danger:hover {
+            background-color: #d32f2f;
         }
 
         .return-button {
@@ -76,11 +91,10 @@
         <tr>
             <th>ID</th>
             <th>Nome</th>
-            <th>Disciplina</th>
-            <th>Professor</th>
+            <th>Disciplinas</th>
+            <th>Professores</th>
             <th>Sala</th>
-            <th>Dia da Semana</th>
-            <th>Horário</th>
+            <th>Horários</th>
             <th>Ações</th>
         </tr>
         </thead>
@@ -88,15 +102,33 @@
         <tr th:each="turma : ${turmas}">
             <td th:text="${turma.id}">1</td>
             <td th:text="${turma.nome}">Nome</td>
-            <td th:text="${turma.disciplina != null ? turma.disciplina.nome : 'Não definida'}">Disciplina</td>
-            <td th:text="${turma.professor != null ? turma.professor.nome : 'Não definido'}">Professor</td>
-            <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
-            <td th:text="${turma.dia_da_semana != null ? turma.dia_da_semana : 'Não definido'}">Dia</td>
-            <td th:text="${turma.horário_inicio != null && turma.horário_termino != null ? turma.horário_inicio + ' - ' + turma.horário_termino : 'Horário não definido'}">Horário</td>
             <td>
-                <a th:href="@{/turmas/editar/{id}(id=${turma.id})}" class="button">Editar</a>
-                <a th:href="@{/turmas/desativar/{id}(id=${turma.id})}" class="button button-danger"
-                   onclick="return confirm('Deseja realmente inativar esta turma?');">Desativar</a>
+                <ul>
+                    <li th:each="td : ${turma.turmaDisciplinas}" th:text="${td.disciplina.nome}"></li>
+                </ul>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="tp : ${turma.turmaProfessores}" th:text="${tp.professor.nome}"></li>
+                </ul>
+            </td>
+            <td th:text="${turma.sala != null ? turma.sala.nome : 'Não definida'}">Sala</td>
+            <td>
+                <ul>
+                    <li th:each="td : ${turma.turmaDisciplinas}">
+                        <span th:text="${td.disciplina.nome} + ': '"></span>
+                        <span th:text="${td.horarioInicio}"></span>
+                        <span th:text="' - ' + ${td.horarioTermino}"></span>
+                        <span th:text="' (' + ${td.diaSemana} + ')'"></span>
+                    </li>
+                </ul>
+            </td>
+            <td>
+                <div class="button-group">
+                    <a th:href="@{/turmas/editar/{id}(id=${turma.id})}" class="button">Editar</a>
+                    <a th:href="@{/turmas/desativar/{id}(id=${turma.id})}" class="button button-danger"
+                       onclick="return confirm('Deseja realmente inativar esta turma?');">Desativar</a>
+                </div>
             </td>
         </tr>
         </tbody>
